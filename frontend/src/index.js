@@ -6,6 +6,7 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserStore from './store/userstore';
 
+
 export const Context = createContext(null)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,9 +14,9 @@ root.render(
   <Context.Provider value={{
     user:new UserStore(),
     }}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
   </Context.Provider>
 );
 
