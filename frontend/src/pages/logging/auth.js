@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import {NavLink, useNavigate} from "react-router-dom";
-import {AUTH_ROUTE, HOMEPAGE_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
+import {AUTH_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 import { login } from '../../http/userAPI';
 import { Context } from '../../index';
 
@@ -20,9 +20,10 @@ const Auth = () => {
       let data;
       data = await login(identify, password);
       
-      user.setUser(data)
+      user.setUser(data.user)
+      user.setIsFTwoA(data.f2a)
       user.setIsAuth(true)
-      navigate(HOMEPAGE_ROUTE)
+      navigate(MAIN_ROUTE)
     } catch (e) {
       alert(e.response.data.message)
     }
