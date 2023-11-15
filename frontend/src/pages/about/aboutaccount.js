@@ -3,9 +3,13 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
 import { fetchOneAccount } from "../../http/accountAPI";
 import {useParams } from "react-router-dom";
+import ChangeAccountName from "../../modals/ChangeAccountName";
+import DeleteAccount from "../../modals/DeleteAccount";
 
 const AboutAccount = () => {
 
+  const [changeAccountNameVisible, setChangeAccountNameVisible] = useState(false)
+  const [deleteAccountVisible, setDeleteAccountVisible] = useState(false)
   const [account, setAccount] = useState({})
   const {id} = useParams()
 
@@ -25,7 +29,11 @@ const AboutAccount = () => {
         <Row className="mt-3 m-auto">
           Реквизиты счёта: {account.requisites}
         </Row>
+        <Button variant={"outline-success"} className="mt-3" onClick={() => {setChangeAccountNameVisible(true)}}>Изменить название счёта</Button>
+        <Button variant={"outline-success"} className="mt-3" onClick={() => {setDeleteAccountVisible(true)}}>Удалить счёт(только для пустых)</Button>
       </Card>
+      <ChangeAccountName show={changeAccountNameVisible} onHide={() => setChangeAccountNameVisible(false)} account={account}/>
+      <DeleteAccount show={deleteAccountVisible} onHide={() => setDeleteAccountVisible(false)} />
     </Container>
   )
 }
