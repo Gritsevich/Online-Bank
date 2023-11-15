@@ -30,3 +30,8 @@ export const fetchOneAccount = async (id) => {
   const {data} = await $authHost.get('api/accounts/' + id, )
   return data.account
 }
+
+export const update = async (account) => {
+  const {data} = await $authHost.patch('api/accounts/' + account.id, account)
+  return data
+}

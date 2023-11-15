@@ -124,6 +124,7 @@ class AccountController
 
   async update(req, res, next)
   {
+    const {id} = req.params
     const { accountName } = req.body
 
     if (!accountName || typeof(accountName) !== 'string')
