@@ -84,16 +84,29 @@ const Payment = () => {
                 value={amount}
                 onChange={handleChange}/>
 
-              <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
-                <Button
+               {selectedOtpr.amount !== undefined ?
+               
+               <Row>
+                { selectedOtpr.amount === 0 || selectedOtpr.amount < amount ? 
+                <Row className="mt-3">На счету отправителя недостаточно средств</Row>
+                :<Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
+                  <Button
                   variant={"outline-success"}
                   className="mt-3"
                   disabled={check()}
                   onClick={() => {setConfirmationPaymentVisible(true)}}
                 >
+                
                   Перевести
                 </Button>
-              </Row>
+                </Row>
+                }
+
+               </Row> 
+               :
+               <Row></Row>
+               }
+
             </Form>
         </Card>
       <ConfirmationPayment show={confirmationPaymentVisible} onHide={() => setConfirmationPaymentVisible(false)} selectedOtpr={selectedOtpr} amount={parseFloat(amount)} selectedPol={selectedPol}/>
