@@ -37,6 +37,7 @@ class AnalyticsController
       attributes: [
         'id',
         'name',
+        'amount',
         'requisites'
       ]
     })

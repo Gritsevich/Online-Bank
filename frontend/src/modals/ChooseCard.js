@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Container, Dropdown} from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
-import {  createAccount, fetchAccountsWithoutCard } from '../http/accountAPI';
+import { createAccount, fetchAccountsWithoutCard } from '../http/accountAPI';
 import { createCard } from '../http/cardAPI';
-import { ACCOUNT_ROUTE, CARDS_ROUTE } from '../utils/consts';
 import { Button, Form } from "react-bootstrap";
 import { isEmpty } from '../utils/functions';
 import { fetchCurrencies, fetchTypes } from '../http/accountAPI';
@@ -20,8 +18,6 @@ const ChooseCard = ({show, onHide, setShouldUpdate}) => {
     const [selectedCurrency, setSelectedCurrency] = useState({})
     const [chooseType, setChooseType] = useState([])
     const [selectedType, setSelectedType] = useState({})
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         fetchCurrencies().then(data => setChooseCurrency(data))

@@ -28,7 +28,7 @@ const FTwoA = observer(() => {
 
   return (
     <Container>
-      {user.isFTwoA && <h1 className="mt-3">Верефикация пройдена</h1>}
+      {user.isFTwoA && <h1 className="mt-3" style={{color:'red'}}>Верефикация пройдена</h1>}
       <h4 className="mt-3">Чтобы получить доступ к переводам и работе со счетами требуется пройти двухфакторную аутентификацию. С её помощью будут подтверждаться все финансовые операции.</h4>
       <div className="mt-3">Отсканируйте QR-код в своём аккаунте Google Authenticator и введите секретный ключ.</div>
       <Image className="mt-3" width={200} height={200} src={QRCode}/>
