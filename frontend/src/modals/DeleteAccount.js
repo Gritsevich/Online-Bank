@@ -1,23 +1,14 @@
 import React, {useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import { createPayment } from '../http/paymentAPI';
-import { useNavigate } from 'react-router-dom';
-import { MAIN_ROUTE } from '../utils/consts';
+import { deleteAccount } from '../http/accountAPI';
 
-const DeleteAccount = ({show, onHide, }) => {
-
-  const [name, setName] = useState('')
-
-  const check = () =>
-    {
-      return name === ''
-    }
+const DeleteAccount = ({show, onHide, account}) => {
 
   const click = async () =>{
     try {
       let data;
-     // data = await createPayment({requisitesFrom: selectedOtpr.requisites, requisitesTo: selectedPol.requisites, amount: amount, code: key});
+      data = await deleteAccount({accountId: account.id,});
       
     } catch (e) {
       alert(e.response.data.message)
@@ -32,23 +23,22 @@ const DeleteAccount = ({show, onHide, }) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                  Введите новое название
+                  Подтверждение удаления
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
-                <Form.Control
-                  value={name}
-                  className='mt-3'
-                  onChange={e => setName(e.target.value)}
-                  placeholder={"Новое имя"}
-                />
-              </Form>
+              {account.amount > 0.00 ? <div>На счету есть сумма. Невозможно удалить.</div> :  <div>Желаете удалить?</div>}
             </Modal.Body>
+          { account.amount > 0.00 ? 
+            <Modal.Footer>
+                <Button variant="outline-success" onClick={onHide}>Ок</Button>
+            </Modal.Footer>
+            :
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Нет</Button>
-                <Button variant="outline-success" disabled={check()} onClick={click}>Да</Button>
+                <Button variant="outline-success" onClick={click}>Да</Button>
             </Modal.Footer>
+            }
         </Modal>
     );
 };

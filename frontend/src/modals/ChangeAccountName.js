@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Form,} from "react-bootstrap";
-import { update } from '../http/accountAPI';
+import { updateAccount } from '../http/accountAPI';
 
 const ChangeAccountName = ({show, onHide, account}) => {
 
@@ -15,7 +15,7 @@ const ChangeAccountName = ({show, onHide, account}) => {
   const click = async () =>{
     try {
       let data;
-      data = await update({id: account.id, accountName: newName}).then(data => {
+      data = await updateAccount({accountId: account.id, accountName: newName}).then(data => {
         setNewName('')
         onHide()})
     } catch (e) {

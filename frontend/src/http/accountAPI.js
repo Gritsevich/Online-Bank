@@ -31,7 +31,11 @@ export const fetchOneAccount = async (id) => {
   return data.account
 }
 
-export const update = async (account) => {
+export const updateAccount = async (account) => {
   const {data} = await $authHost.patch('api/accounts/' + account.id, account)
   return data
+}
+
+export const deleteAccount = async (account) => {
+  await $authHost.delete('api/accounts/' + account.id)
 }

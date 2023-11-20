@@ -1,21 +1,24 @@
 import React, {useEffect, useState} from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Row, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
 import { fetchOneAccount } from "../../http/accountAPI";
 import {useParams } from "react-router-dom";
 import ChangeAccountName from "../../modals/ChangeAccountName";
 import DeleteAccount from "../../modals/DeleteAccount";
+import { observer } from "mobx-react-lite";
 
-const AboutAccount = () => {
+const AboutAccount = observer(() => {
 
   const [changeAccountNameVisible, setChangeAccountNameVisible] = useState(false)
   const [deleteAccountVisible, setDeleteAccountVisible] = useState(false)
   const [account, setAccount] = useState({})
+  const [shouldUpdate, setShouldUpdate] = useState(false)
   const {id} = useParams()
 
   useEffect(() => {
     fetchOneAccount(id).then(data => setAccount(data))
-  }, [])
+    setShouldUpdate(false)
+  }, [shouldUpdate])
 
   return (
     <Container
@@ -32,10 +35,10 @@ const AboutAccount = () => {
         <Button variant={"outline-success"} className="mt-3" onClick={() => {setChangeAccountNameVisible(true)}}>Изменить название счёта</Button>
         <Button variant={"outline-success"} className="mt-3" onClick={() => {setDeleteAccountVisible(true)}}>Удалить счёт(только для пустых)</Button>
       </Card>
-      <ChangeAccountName show={changeAccountNameVisible} onHide={() => setChangeAccountNameVisible(false)} account={account}/>
-      <DeleteAccount show={deleteAccountVisible} onHide={() => setDeleteAccountVisible(false)} />
+      <ChangeAccountName show={changeAccountNameVisible} onHide={() => setChangeAccountNameVisible(false)} account={account} setShouldUpdate={setShouldUpdate}/>
+      <DeleteAccount show={deleteAccountVisible} onHide={() => setDeleteAccountVisible(false)} account={account}/>
     </Container>
   )
-}
+})
 
 export default AboutAccount;

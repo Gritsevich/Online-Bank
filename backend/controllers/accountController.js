@@ -139,9 +139,7 @@ class AccountController
        return next(ApiError.internal(err.message))   
 
     }
-
-
-    return res.json({token})
+    return res.json({account})
   }
 
   async delete(req, res, next)
