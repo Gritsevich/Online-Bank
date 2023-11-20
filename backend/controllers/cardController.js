@@ -47,8 +47,8 @@ class CardController
   {
     const  cardId  = parseInt(req.params.id)
 
-    console.log(cardId)
-    console.log(req.params.id)
+   // console.log(cardId)
+    //console.log(req.params.id)
 
     if (!cardId || typeof(cardId) !== 'number')
       return next(ApiError.badRequest('Некорректно задано имя счета'))
@@ -65,22 +65,22 @@ class CardController
           'CVV',
           'accountId',
          // [Sequelize.col('currency.type'), 'currency'],
-          [Sequelize.col('block.type'), 'block']
+          //[Sequelize.col('block.type'), 'block']
         ],
         include: [
-            {
-                model: Accounts,
-                attributes: [],
-                include: [
-                    {
-                        model: Currency,
-                        attributes: []
-                    }
-                ]
-            },
-            {
-                model: Blocks,
-                attributes: []
+          {
+            model: Blocks,
+            attributes: ['type'],
+          },  
+          {
+            model: Accounts,
+            attributes: [],
+            include: [
+                {
+                    model: Currency,
+                    attributes: []
+                }
+              ]
             }
         ]
     })
@@ -112,7 +112,7 @@ class CardController
                       userId: user.id,
                       accountId: account.id,
                       name: name.text,
-                      blockId: 0
+                      blockId: 1
                     })
     }catch(err){
        return next(ApiError.internal(err.message))   
