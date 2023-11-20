@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
 import Modal from "react-bootstrap/Modal";
-import {Button, Form,} from "react-bootstrap";
+import {Button, Form, Row} from "react-bootstrap";
 import { updateAccount } from '../http/accountAPI';
+import { useNavigate } from 'react-router-dom';
+import { MAIN_ROUTE } from "../utils/consts";
+
 
 const ChangeAccountName = ({show, onHide, account}) => {
 
-  const [newName, setNewName] = useState(account === undefined ? '' : account.name)
+  //account === undefined ? '' : account.name
+  const [newName, setNewName] = useState('')
+  const navigate = useNavigate()
 
   const check = () =>
     {
@@ -18,6 +23,7 @@ const ChangeAccountName = ({show, onHide, account}) => {
       data = await updateAccount({accountId: account.id, accountName: newName}).then(data => {
         setNewName('')
         onHide()})
+      navigate(MAIN_ROUTE)
     } catch (e) {
       alert(e.response.data.message)
     }
@@ -36,6 +42,7 @@ const ChangeAccountName = ({show, onHide, account}) => {
             </Modal.Header>
             <Modal.Body>
               <Form>
+                <Row className= "mt-3">Текущее название: {account.name}</Row>
                 <Form.Control
                   value={newName}
                   className='mt-3'
