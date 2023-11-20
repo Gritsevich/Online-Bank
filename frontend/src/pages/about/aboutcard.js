@@ -16,7 +16,7 @@ const AboutCard = () => {
   }, [])
 
   useEffect(() => {
-    fetchOneAccount(id).then(data => setAccount(data))
+    fetchOneAccount(card.accountId).then(data => setAccount(data))
   }, [])
 
   return (
@@ -71,7 +71,8 @@ const AboutCard = () => {
           variant={"outline-success"}
           className="mt-3"
         >
-          Разблокировать карту {card.blockId}
+          Статус карты: 
+          Разблокировать карту 
         </Button>
       </Card>
     </Container>
