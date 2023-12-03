@@ -9,7 +9,7 @@ router.get('/:accountId', authMiddleware, accountController.getDetails)
 router.get('/withoutcard/:id', authMiddleware, accountController.getListWithoutCard)
 router.post('/', authMiddleware, accountController.create)
 router.patch('/:id', authMiddleware, accountBelongingMiddleware, accountController.update)
-router.delete('/:id', authMiddleware, accountBelongingMiddleware, accountController.delete)
+router.delete('/:id', authMiddleware, /*accountBelongingMiddleware,*/ accountController.delete)
 router.post('/transfer/', accountController.transfer)
 
 module.exports = router 
