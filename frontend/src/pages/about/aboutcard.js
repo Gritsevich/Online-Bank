@@ -16,8 +16,9 @@ const AboutCard = () => {
   }, [])
 
   useEffect(() => {
-    fetchOneAccount(card.accountId).then(data => setAccount(data))
-  }, [])
+    if(card.accountId)
+      fetchOneAccount(card.accountId).then(data => setAccount(data))
+  }, [card.accountId])
 
   return (
     <Container
@@ -26,26 +27,6 @@ const AboutCard = () => {
     >
       <Card style={{width: 500}} className="p-5">
         <Image width={170} height={170} className="mt-3 m-auto" src="https://img.freepik.com/premium-vector/bank-card-cashless-payments-vector-illustration-isolated-on-white-background_528104-536.jpg?size=626&ext=jpg&ga=GA1.1.1483180068.1698148974&semt=ais"/>
-        <Row className="justify-content-between mt-3 m-auto">  
-          <Col><Button  
-            variant={"outline-success"}
-            className="mt-3"
-          >
-            Пополнить
-          </Button></Col>
-          <Col><Button  
-            variant={"outline-success"}
-            className="mt-3"
-          >
-            Перевести
-          </Button></Col>
-          <Col><Button  
-            variant={"outline-success"}
-            className="mt-3"
-          >
-            История
-          </Button></Col>
-        </Row>
         <Row className="mt-3">
           Связана со счётом "{account.name}" {account.amount} {account.currency}
         </Row> 
@@ -62,6 +43,13 @@ const AboutCard = () => {
           CVV: {card.CVV}
         </Row>
         <Button  
+            variant={"outline-success"}
+            className="mt-3"
+          >
+            История
+          </Button>
+        <Row className="mt-3"> Статус карты: {card.block ? card.block.type : " "}</Row>
+        <Button  
           variant={"outline-danger"}
           className="mt-3"
         >
@@ -71,7 +59,6 @@ const AboutCard = () => {
           variant={"outline-success"}
           className="mt-3"
         >
-          Статус карты: 
           Разблокировать карту 
         </Button>
       </Card>
