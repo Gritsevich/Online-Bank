@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Button, Card } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
 import { fetchOneCard } from "../../http/cardAPI";
 import {useParams } from "react-router-dom";
@@ -42,12 +42,6 @@ const AboutCard = () => {
         <Row className="mt-3">
           CVV: {card.CVV}
         </Row>
-        <Button  
-            variant={"outline-success"}
-            className="mt-3"
-          >
-            История
-          </Button>
         <Row className="mt-3"> Статус карты: {card.block ? card.block.type : " "}</Row>
         <Button  
           variant={"outline-danger"}
