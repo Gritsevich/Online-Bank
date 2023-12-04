@@ -18,7 +18,15 @@ const Registration = () => {
   const navigate = useNavigate()
 
   const onPageAnswerUpdate = (step, answersObj) => {
-    setPagesAnswers({...pagesAnswers, [step]: answersObj});
+    if (answersObj) {
+      let answersKeys = Object.keys(answersObj);
+      for (let i = 1; i < answersKeys.length; i++) {
+        if (!(answersObj[answersKeys[0]] in pagesAnswers)) {
+          pagesAnswers[answersObj[answersKeys[0]]] = {};
+        }
+        pagesAnswers[answersObj[answersKeys[0]]][answersKeys[i]] =  answersObj[answersKeys[i]];
+      }
+    } 
   }
 
   const prevButton = () => {

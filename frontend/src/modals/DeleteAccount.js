@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Modal from "react-bootstrap/Modal";
-import {Button, Col, Form, Row} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import { deleteAccount } from '../http/accountAPI';
 
 const DeleteAccount = ({show, onHide, account}) => {
