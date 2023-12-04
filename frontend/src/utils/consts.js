@@ -9,3 +9,5 @@ export const ABOUTCARD_ROUTE = '/aboutcard'
 export const ABOUTACCOUNT_ROUTE = '/aboutaccount'
 export const MAIN_ROUTE = '/'
 export const FTWOA_ROUTE = '/FTwoA'
+
+export const MAX_LIMIT = 8
