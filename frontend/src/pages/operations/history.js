@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Pages from "../../components/pagination/Pages.Js";
 import { MAX_LIMIT } from "../../utils/consts";
 import { fetchHistory } from "../../http/historyAPI";
+import HistoryList from "../../components/List/HistoryList";
 
 
 const History = () => {
@@ -39,7 +40,7 @@ const History = () => {
         <hr style={{
               color: 'black',
               height: 5}}/>
-        
+        <HistoryList histories={histories}/>
         <hr style={{
               color: 'black',
               height: 5}}/>
