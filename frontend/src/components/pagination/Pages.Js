@@ -2,7 +2,7 @@ import React from 'react';
 import {observer} from "mobx-react-lite";
 import {Pagination} from "react-bootstrap";
 
-const Pages = observer(({currentPage, setCurrentPage, pageCount}) => {
+const Pages = ({currentPage, setCurrentPage, pageCount}) => {
 
     const pages = []
 
@@ -23,6 +23,6 @@ const Pages = observer(({currentPage, setCurrentPage, pageCount}) => {
             )}
         </Pagination>
     );
-});
+};
 
 export default Pages;
