@@ -1,5 +1,6 @@
 const ApiError = require('../error/ApiError');
-const {User} = require('../models/models')
+const {User, History} = require('../models/models')
+const { where, Op, order, attributes } = require('sequelize');
 
 
 class HistoryController
@@ -11,16 +12,54 @@ class HistoryController
 
     if(!account)
        return next(ApiError.badRequest('Тип счета не предналежит данному пользователю и/или счет не найден'))   
+    
+    //новое
+    let {limit, page} = req.query
+    page = page || 1
+    limit = limit || 8
+    let offset = page * limit - limit
+    //.findAndCountAll({limit, offset})
 
-    const histories = await History.findAll({where:{ userId: req.user.id, accountId: accountId }})
+    const histories = await History.findAll(
+      {where:{
+         userId: req.user.id, accountId: accountId }
+      },
 
-    return histories
+      {order: [
+        ['id', 'DESC'], //только id? 
+      ]},
+      
+      {attributes:
+        ['senderName', 'receiverName', 'amount', 'createdAt'] //преобразовать createdAt в нормальный формат
+      }
+    )
+    return histories //json?
   }
 
   async getListWithoutAccount(){
-    const histories = await History.findAll({where:{ userId: req.user.id, accountId: accountId }})
 
-    return histories
+    //новое
+    let {limit, page} = req.query
+    page = page || 1
+    limit = limit || 8
+    let offset = page * limit - limit
+    //.findAndCountAll({limit, offset})
+
+    const histories = await History.findAll(
+      {where:{ 
+        userId: req.user.id, accountId: accountId }
+      }, 
+
+      {order: [
+        ['id', 'DESC'], //только id? 
+      ]},
+      
+      {attributes:
+        ['senderName', 'receiverName', 'amount', 'createdAt'] //преобразовать createdAt в нормальный формат
+      }
+      )
+
+    return histories //json?
   }
 
   async getList(req, res, next)
