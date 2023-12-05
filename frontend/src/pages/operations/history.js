@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Pages from "../../components/pagination/Pages.Js";
+import Pages from "../../components/pagination/Pages";
 import { MAX_LIMIT } from "../../utils/consts";
 import { fetchHistory } from "../../http/historyAPI";
 import HistoryList from "../../components/List/HistoryList";

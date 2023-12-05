@@ -1,6 +1,6 @@
 import React from 'react';
 import {Row} from "react-bootstrap";
-import HistoryItem from "../../Order/OrderHistory/OrderItem";
+import HistoryItem from '../Item/HistoryItem';
 
 const HistoryList =({histories}) => {
 
