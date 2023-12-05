@@ -33,7 +33,7 @@ class HistoryController
         ['senderName', 'receiverName', 'amount', 'createdAt'] //преобразовать createdAt в нормальный формат
       }
     )
-    return histories //json?
+    return histories 
   }
 
   async getListWithoutAccount(){
@@ -59,18 +59,17 @@ class HistoryController
       }
       )
 
-    return histories //json?
+    return histories 
   }
 
   async getList(req, res, next)
   {
     const { accountId } = req.body
 
-    const histories = accountId? await this.getListWithAccount(accountId) : await this.getListWithoutAccount()
+    const histories = (accountId !== undefined) ? await this.getListWithAccount(accountId) : await this.getListWithoutAccount()
 
     return res.json({ histories })
   }
-
 }
 
 module.exports = new HistoryController()
