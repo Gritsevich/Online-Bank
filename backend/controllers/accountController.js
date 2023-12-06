@@ -150,6 +150,7 @@ class AccountController
 
   async transfer(req, res, next)
   {
+    const userID = req.user.id;
     const { requisitesFrom, requisitesTo, amount, code } = req.body
 
     if (!requisitesFrom || typeof(requisitesFrom) !== 'string')
@@ -175,7 +176,7 @@ class AccountController
     }
     let success = {}
     try{
-      success = await transfer(requisitesFrom, requisitesTo, amount)
+      success = await transfer(requisitesFrom, requisitesTo, amount, userID)
     }catch(err){
       return next(err)
     }

@@ -98,6 +98,8 @@ User.hasMany(Accounts, {onDelete: 'CASCADE'})
 
 Credit.belongsTo(Accounts, {foreignKey: { allowNull: false }})
 
+User.hasMany(History, {onDelete: 'CASCADE'})
+History.belongsTo(User, {foreignKey: {  name: 'userId', allowNull: false }})
 History.belongsTo(Currency, { as: "senderCurrency" })
 History.belongsTo(Currency, { as: "receiverCurrency" })
 
