@@ -112,7 +112,7 @@ class CardController
                       userId: user.id,
                       accountId: account.id,
                       name: name.text,
-                      blockId: 1
+                      blockId: 0
                     })
     }catch(err){
        return next(ApiError.internal(err.message))   
@@ -142,7 +142,7 @@ class CardController
   {
     let card = req.card
     if(card.blockId != BlockEnum.LOCKBYUSER)
-      return next(ApiError.badRequest('Недостаточно прав или невозможно выполнить блокировку'))
+      return next(ApiError.badRequest('Недостаточно прав или невозможно выполнить разблокировку'))
 
     card.blockId = BlockEnum.UNBLOCK
     await card.save()

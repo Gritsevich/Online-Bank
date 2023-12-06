@@ -57,7 +57,7 @@ const findCurrencyId = async (currencyType) => {
     return currency.id
 }
 
-const updateOur = async (account, accountFrom, accountTo, amount, options) => {
+const updateOur = async (account, accountFrom, accountTo, amount, options, userID) => {
     await History.create({
             amount: amount,
             initiator: account.requisites,
@@ -66,7 +66,8 @@ const updateOur = async (account, accountFrom, accountTo, amount, options) => {
             receiver: accountTo.requisites,
             receiverName: accountTo.personName,
             senderCurrencyId: await findCurrencyId(accountFrom.currency),
-            receiverCurrencyId: await findCurrencyId(accountTo.currency)
+            receiverCurrencyId: await findCurrencyId(accountTo.currency),
+            userId: userID
         }, options)
 
     options.where = { id: account.id }
@@ -78,15 +79,15 @@ const updateAlien = async (account, accountFrom, accountTo, amount) => {
     throw ApiError.badRequest("Данный банк не поддерживает взаимодействия с чужими банками")
 }
 
-const updateAccount = async (account, accountFrom, accountTo, amount, options) => {
+const updateAccount = async (account, accountFrom, accountTo, amount, options, userID) => {
     if( account.isOur == true){
-       await updateOur(account, accountFrom, accountTo, amount, options)
+       await updateOur(account, accountFrom, accountTo, amount, options,  userID)
     }else{
         await updateAlien(account, accountFrom, accountTo, amount, options)
     }
 }
 
-const transfer = async(accountRequisitesFrom, accountRequisitesTo, amount) => {
+const transfer = async(accountRequisitesFrom, accountRequisitesTo, amount, userID) => {
     let accountFrom =  await getAccount(accountRequisitesFrom)
     let accountTo = await getAccount(accountRequisitesTo)
 
@@ -96,8 +97,8 @@ const transfer = async(accountRequisitesFrom, accountRequisitesTo, amount) => {
     const amount_convert = await currencyConverter.from(accountFrom.currency).to(accountTo.currency).amount(amount).convert()
 
     await sequelize.transaction(async (t) => {
-        await updateAccount(accountFrom, accountFrom, accountTo, -amount, { transaction: t })
-        await updateAccount(accountTo, accountFrom, accountTo, amount_convert, { transaction: t })
+        await updateAccount(accountFrom, accountFrom, accountTo, -amount, { transaction: t }, userID)
+        await updateAccount(accountTo, accountFrom, accountTo, amount_convert, { transaction: t }, userID)
     })
     return { success: true }
 }
