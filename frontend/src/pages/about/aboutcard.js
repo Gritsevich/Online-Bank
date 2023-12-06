@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from "react";
 import { Container, Row, Button, Card } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
-import { fetchOneCard } from "../../http/cardAPI";
-import {useParams } from "react-router-dom";
+import { cardBlock, fetchOneCard } from "../../http/cardAPI";
+import {useNavigate, useParams } from "react-router-dom";
 import { fetchOneAccount } from "../../http/accountAPI";
+import { CARDS_ROUTE } from "../../utils/consts";
 
 const AboutCard = () => {
 
   const [card, setCard] = useState({})
   const [account, setAccount] = useState({})
   const {id} = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchOneCard(id).then(data => setCard(data))
@@ -19,6 +21,16 @@ const AboutCard = () => {
     if(card.accountId)
       fetchOneAccount(card.accountId).then(data => setAccount(data))
   }, [card.accountId])
+
+  const click = async () =>{
+    try {
+      let data;
+      data = await cardBlock({cardId: card.id})
+      navigate(CARDS_ROUTE)
+    } catch (e) {
+      alert(e.response.data.message)
+    }
+  }
 
   return (
     <Container
@@ -43,21 +55,35 @@ const AboutCard = () => {
           CVV: {card.CVV}
         </Row>
         <Row className="mt-3"> Статус карты: {card.block ? card.block.type : " "}</Row>
-        <Button  
-          variant={"outline-danger"}
-          className="mt-3"
-        >
-          Заблокировать карту
-        </Button>
-        <Button  
-          variant={"outline-success"}
-          className="mt-3"
-        >
-          Разблокировать карту 
-        </Button>
+        {
+          1 === 1   ?  
+          <Button  
+            variant={"outline-danger"}
+            className="mt-3"
+            onClick={click}
+          >
+            Заблокировать карту
+          </Button>
+          :
+          <Row></Row>
+        }
+        {
+          1 === 1   ?  
+          <Button  
+            variant={"outline-success"}
+            className="mt-3"
+          >
+            Разблокировать карту 
+          </Button>
+          :
+          <Row>К сожалению ваша карта была заблокирована банком. Для её восстановления следует обратиться в ближайшее отделение банка.</Row>
+        }
       </Card>
     </Container>
   )
 }
 
 export default AboutCard;
+
+
+
