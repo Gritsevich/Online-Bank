@@ -8,7 +8,7 @@ const accountBelongingMiddleware = require('../middleware/accountBelongingMiddle
 router.get('/', authMiddleware, cardController.getList)
 router.get('/:id', authMiddleware, cardController.getDetails)
 router.post('/', authMiddleware, accountBelongingMiddleware, cardController.create)
-router.post('/block/:id', authMiddleware, cardBelongingMiddleware, cardController.block)
-router.post('/unblock/:id', authMiddleware, cardBelongingMiddleware, cardController.unblock)
+router.post('/block/', authMiddleware, /*cardBelongingMiddleware*/ cardController.block)
+router.post('/unblock/', authMiddleware, /*cardBelongingMiddleware*/cardController.unblock)
 
 module.exports = router 

@@ -16,7 +16,12 @@ export const fetchOneCard = async (id) => {
   return data.card
 }
 
-export const cardBlock = async (id) => {
-  const {data} = await $authHost.post('api/cards/block/' + id, )
+export const cardBlock = async (card) => {
+  const {data} = await $authHost.post('api/cards/block/', card)
+  return data
+}
+
+export const cardUnblock = async (array) => {
+  const {data} = await $authHost.post('api/cards/unblock/', array)
   return data
 }
