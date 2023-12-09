@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 import { Container, Row, Button, Card } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
-import { cardBlock, fetchOneCard } from "../../http/cardAPI";
+import { cardBlock, cardUnblock, fetchOneCard } from "../../http/cardAPI";
 import {useNavigate, useParams } from "react-router-dom";
 import { fetchOneAccount } from "../../http/accountAPI";
 import { CARDS_ROUTE } from "../../utils/consts";
+import Unblock from "../../modals/Unblock";
 
 const AboutCard = () => {
 
@@ -12,6 +13,7 @@ const AboutCard = () => {
   const [account, setAccount] = useState({})
   const {id} = useParams()
   const navigate = useNavigate()
+  const [unblockVisible, setUnblockVisible] = useState(false)
 
   useEffect(() => {
     fetchOneCard(id).then(data => setCard(data))
@@ -22,10 +24,10 @@ const AboutCard = () => {
       fetchOneAccount(card.accountId).then(data => setAccount(data))
   }, [card.accountId])
 
-  const click = async () =>{
+  const blocking = async () =>{
     try {
       let data;
-      data = await cardBlock({cardId: card.id})
+      data = await cardBlock(card)
       navigate(CARDS_ROUTE)
     } catch (e) {
       alert(e.response.data.message)
@@ -56,30 +58,40 @@ const AboutCard = () => {
         </Row>
         <Row className="mt-3"> Статус карты: {card.block ? card.block.type : " "}</Row>
         {
-          1 === 1   ?  
-          <Button  
-            variant={"outline-danger"}
-            className="mt-3"
-            onClick={click}
-          >
-            Заблокировать карту
-          </Button>
-          :
+          card.block ?  
+          <Row>
+            { 
+              card.block.type === "unblock" ?
+                <Button  
+                  variant={"outline-danger"}
+                  className="mt-3"
+                  onClick={blocking}
+                >
+                  Заблокировать карту
+                </Button>
+              :
+              <Row className="mt-3">
+                { 
+                  card.block.type === "block by user" ?
+                  <Button  
+                    variant={"outline-success"}
+                    className="mt-3"
+                    onClick={() => {setUnblockVisible(true)}}
+                  >
+                    Разблокировать карту 
+                  </Button>
+                :
+                  <h5 style={{color:'red'}}>К сожалению ваша карта была заблокирована. Для её восстановления следует обратиться в ближайшее отделение банка.</h5>
+                }
+              </Row>
+            }
+          </Row>
+        :
           <Row></Row>
         }
-        {
-          1 === 1   ?  
-          <Button  
-            variant={"outline-success"}
-            className="mt-3"
-          >
-            Разблокировать карту 
-          </Button>
-          :
-          <Row>К сожалению ваша карта была заблокирована банком. Для её восстановления следует обратиться в ближайшее отделение банка.</Row>
-        }
       </Card>
-    </Container>
+    <Unblock show={unblockVisible} onHide={() => setUnblockVisible(false)} card={card}/>
+  </Container>
   )
 }
 

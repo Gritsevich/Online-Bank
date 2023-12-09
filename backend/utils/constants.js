@@ -1,6 +1,6 @@
 const BlockEnum = {
-    UNBLOCK: 0,
-    LOCKBYUSER: 1,
+    UNBLOCK: "unblock",
+    LOCKBYUSER: "block by user",
 }
 
 const TypeAccountEnum = {

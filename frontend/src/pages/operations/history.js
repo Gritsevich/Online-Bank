@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Pages from "../../components/pagination/Pages";
-import { MAX_LIMIT } from "../../utils/consts";
 import { fetchHistory } from "../../http/historyAPI";
 import HistoryList from "../../components/List/HistoryList";
 
 
 const History = () => {
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalCount, setTotalCount] = useState(0)
   const [histories, setHistories] = useState([])
 
   useEffect(() => {
-    fetchHistory(currentPage, MAX_LIMIT).then(data => {
-      setHistories(data.rows)
-      setTotalCount(data.count)
+    fetchHistory().then(data => {
+      setHistories(data)
     })
-  }, [currentPage])
+  }, [])
 
   return ( 
       <Container>
@@ -44,7 +39,6 @@ const History = () => {
         <hr style={{
               color: 'black',
               height: 5}}/>
-        <Pages currentPage = {currentPage} setCurrentPage = {setCurrentPage} pageCount = {Math.ceil(totalCount / MAX_LIMIT)}/>
       </Container>
   )
 };
