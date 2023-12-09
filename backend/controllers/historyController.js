@@ -36,30 +36,16 @@ class HistoryController
     return histories 
   }
 
-  async getListWithoutAccount(){
-
-    //новое
-    let {limit, page} = req.query
-    page = page || 1
-    limit = limit || 8
-    let offset = page * limit - limit
-    //.findAndCountAll({limit, offset})
+  async getListWithoutAccount(req, res, next){
 
     const histories = await History.findAll(
-      {where:{ 
-        userId: req.user.id, accountId: accountId }
-      }, 
+      {
+      where: { userId: req.user.id },
+      attributes: ['senderName', 'receiverName', 'amount', 'createdAt'],
+      order: [['createdAt', 'DESC']], // Сортировка по убыванию по полю "createdAt"
+    });
 
-      {order: [
-        ['id', 'DESC'], //только id? 
-      ]},
-      
-      {attributes:
-        ['senderName', 'receiverName', 'amount', 'createdAt'] //преобразовать createdAt в нормальный формат
-      }
-      )
-
-    return histories 
+    return res.json({ histories })
   }
 
   async getList(req, res, next)
