@@ -112,7 +112,7 @@ class CardController
                       userId: user.id,
                       accountId: account.id,
                       name: name.text,
-                      blockId: 0
+                      blockId: 1
                     })
     }catch(err){
        return next(ApiError.internal(err.message))   
@@ -128,24 +128,41 @@ class CardController
 
   async block(req, res, next)
   {
-    let card = req.card
-    if(card.blockId != BlockEnum.UNBLOCK)
+    let card = req.body
+    if(card.block.type != BlockEnum.UNBLOCK)
       return next(ApiError.badRequest('Недостаточно прав или невозможно выполнить блокировку'))
 
-    card.blockId = BlockEnum.LOCKBYUSER
-    await card.save()
+    card.block.type = BlockEnum.LOCKBYUSER
+    await Cards.update({
+      blockId: 2
+    },{where:{ id: card.id}})
 
     return res.json({ success: true })
+    //await Cards.save()
   }
 
    async unblock(req, res, next)
   {
-    let card = req.card
+    const user = req.user
+    let { card, code } = req.body
+
     if(card.blockId != BlockEnum.LOCKBYUSER)
       return next(ApiError.badRequest('Недостаточно прав или невозможно выполнить разблокировку'))
+  
+    if (!code || typeof(code) !== 'string')
+      return next(ApiError.badRequest('Некорректно задано code'))
+
+    try{
+      if( ! await f2aController.check(code, user.userId))//user?
+        return next(ApiError.badRequest('Некорректно веден код'))
+    } catch(err){
+      return next(err)
+    }
 
     card.blockId = BlockEnum.UNBLOCK
-    await card.save()
+    await Cards.update({
+      blockId: 1
+    },{where:{ id: card.id}})
 
     return res.json({ success: true })
   }
