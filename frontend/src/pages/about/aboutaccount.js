@@ -33,7 +33,6 @@ const AboutAccount = observer(() => {
           Реквизиты счёта: {account.requisites}
         </Row>
         <Button variant={"outline-success"} className="mt-3" onClick={() => {setChangeAccountNameVisible(true)}}>Изменить название счёта</Button>
-        <Button variant={"outline-success"} className="mt-3" onClick={() => {setDeleteAccountVisible(true)}}>Удалить счёт(только для пустых)</Button>
       </Card>
       <ChangeAccountName show={changeAccountNameVisible} onHide={() => setChangeAccountNameVisible(false)} account={account} setShouldUpdate={setShouldUpdate}/>
       <DeleteAccount show={deleteAccountVisible} onHide={() => setDeleteAccountVisible(false)} account={account}/>
