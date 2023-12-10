@@ -1,7 +1,7 @@
 https = require('node:https');
 
 
-function doRequest(url, type, data) {
+async function doRequest(url, type, data) {
   const dataString = JSON.stringify(data? data: "")
 
   const options = {
