@@ -38,7 +38,7 @@ const Unblock = ({show, onHide, card}) => {
             </Modal.Header>
             <Modal.Body>
               <Form>
-                <Row className='mt-3'>Подтверждаете перевод?</Row>
+                <Row className='mt-3'>Подтверждаете разблокировку?</Row>
                 <Form.Control
                   value={key}
                   className='mt-3'
