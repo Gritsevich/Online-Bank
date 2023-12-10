@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Container, Card, Form, Row, Col, Button } from "react-bootstrap";
-import { createAccount, fetchCurrencies, fetchTypes } from "../../http/accountAPI";
+import { createAccount, createCreditAccount, fetchCurrencies, fetchTypes } from "../../http/accountAPI";
 import { MAIN_ROUTE } from "../../utils/consts";
 import { useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
@@ -10,6 +10,9 @@ import { isEmpty } from "../../utils/functions";
 const Account = (number) => {
 
   const [name, setName] = useState('')
+  const [creditName, setCreditName] = useState('')
+  const [creditAmount, setCreditAmount] = useState(0)
+  const [term, setTerm] = useState(0)
 
   const [chooseCurrency, setChooseCurrency] = useState([])
   const [selectedCurrency, setSelectedCurrency] = useState({})
@@ -30,10 +33,25 @@ const Account = (number) => {
     return name === '' || isEmpty(selectedCurrency) || isEmpty(selectedType)
   }
 
-  const click = async () => {
+  const checkCredit = () => {
+    return creditName === '' || isEmpty(selectedCurrency) || isEmpty(selectedType) || creditAmount === 0 || term === 0
+  }
+
+  const debit = async () => {
     try {
       let data;
       data = await createAccount({accountName : name, currencyId : selectedCurrency.id, typeAccountId:  selectedType.id});
+      
+      navigate(MAIN_ROUTE)
+    } catch (e) {
+      alert(e.response.data.message)
+    }
+  }
+
+  const credit = async () => {
+    try {
+      let data;
+      data = await createCreditAccount({accountName : creditName, currencyId : selectedCurrency.id, typeAccountId:  selectedType.id, creditAmount : creditAmount, term : term});
       
       navigate(MAIN_ROUTE)
     } catch (e) {
@@ -62,37 +80,81 @@ const Account = (number) => {
             </Dropdown.Menu>
             </Dropdown>
             <Form className="d-flex flex-column">
-              {selectedType.id === 1 && 
-              <div>
-                  <Form.Control
-                      className="mt-3"
-                      placeholder="Введите название счёта..."
-                      value={name}
-                      onChange={e => setName(e.target.value)}
-                  />
-                  <Dropdown className="mt-2 mb-2">
-                          <Dropdown.Toggle>{selectedCurrency.value || "Выберите тип валюты"}</Dropdown.Toggle>
-                          <Dropdown.Menu>
-                              {chooseCurrency.map(currency =>
-                                  <Dropdown.Item
-                                      onClick={() => setSelectedCurrency(currency)}
-                                      key={currency.id}
-                                  >
-                                      {currency.value}
-                                  </Dropdown.Item>
-                              )}
-                          </Dropdown.Menu>
+                {selectedType.id === 1 &&
+                  <div>
+                      <Form.Control
+                        className="mt-3"
+                        placeholder="Введите название счёта..."
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
+                      <Dropdown className="mt-2 mb-2">
+                        <Dropdown.Toggle>{selectedCurrency.value || "Выберите тип валюты"}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {chooseCurrency.map(currency =>
+                                <Dropdown.Item
+                                    onClick={() => setSelectedCurrency(currency)}
+                                    key={currency.id}
+                                >
+                                    {currency.value}
+                                </Dropdown.Item>
+                            )}
+                        </Dropdown.Menu>
                       </Dropdown>
-                  </div>}
+                    </div>}
+                  {selectedType.id === 2 && <div>
+                    <Form.Control
+                        className="mt-3"
+                        placeholder="Введите название кредитного счёта..."
+                        value={creditName}
+                        onChange={e => setCreditName(e.target.value)}
+                      />
+                      <Form.Control
+                        className="mt-3"
+                        placeholder="Введите сумму кредита..."
+                        value={creditAmount}
+                        onChange={e => setCreditAmount(e.target.value)}
+                      />
+                      <Form.Control
+                        className="mt-3"
+                        placeholder="Введите срок кредита..."
+                        value={term}
+                        onChange={e => setTerm(e.target.value)}
+                      />
+                      <Dropdown className="mt-2 mb-2">
+                        <Dropdown.Toggle>{selectedCurrency.value || "Выберите тип валюты"}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {chooseCurrency.map(currency =>
+                                <Dropdown.Item
+                                    onClick={() => setSelectedCurrency(currency)}
+                                    key={currency.id}
+                                >
+                                    {currency.value}
+                                </Dropdown.Item>
+                            )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                  </div>
+                  }
                 <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
+                {selectedType.id === 1 && <div>
                     <Button
                       variant={"outline-success"}
                       className="mt-3"
                       disabled={check()}
-                      onClick={click}
+                      onClick={debit}
                     >
-                      Создать
-                    </Button>
+                      Создать дебетовый счёт
+                    </Button></div>}
+                {selectedType.id === 2 && <div>
+                <Button
+                  variant={"outline-success"}
+                  className="mt-3"
+                  disabled={checkCredit()}
+                  onClick={credit}
+                >
+                  Создать кредитный счёт
+                </Button></div>}
                 </Row>
             </Form>
         </Card>

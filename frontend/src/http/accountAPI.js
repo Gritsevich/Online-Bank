@@ -39,3 +39,8 @@ export const updateAccount = async (account) => {
 export const deleteAccount = async (account) => {
   await $authHost.delete('api/accounts/' + account.id)
 }
+
+export const createCreditAccount = async (account) => {
+  const {data} = await $authHost.post('api/accounts/', account)
+  return data
+}
