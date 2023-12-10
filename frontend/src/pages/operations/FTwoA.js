@@ -26,6 +26,21 @@ const FTwoA = observer(() => {
     user.setIsFTwoA(data.success)
   }
 
+  const handleChange = (e) => 
+  {
+    let value = e.target.value
+    if(value === '')
+    {
+      setKey('')
+      return
+    }
+    value = value.replace(/^0+/,"")
+    if(value.match("^[0-9]{1,6}$")!=null) 
+    {
+      setKey(value);
+    }
+  }
+
   return (
     <Container>
       {user.isFTwoA && <h1 className="mt-3" style={{color:'red'}}>Верефикация пройдена</h1>}
@@ -37,7 +52,7 @@ const FTwoA = observer(() => {
           className="mt-3"
           placeholder="Введите секретный ключ..."
           value={key}
-          onChange={e => setKey(e.target.value)}
+          onChange={handleChange}
         />
       </Form>
       <Button  className="mt-3" variant="outline-success" disabled={check()} onClick={click}>Отправить</Button>

@@ -11,7 +11,20 @@ const ConfirmationPayment = ({ show, onHide, selectedOtpr, amount, selectedPol }
   const [key, setKey] = useState('')
   const navigate = useNavigate()
 
-
+  const handleChange = (e) => 
+  {
+    let value = e.target.value
+    if(value === '')
+    {
+      setKey('')
+      return
+    }
+    value = value.replace(/^0+/,"")
+    if(value.match("^[0-9]{1,6}$")!=null) 
+    {
+      setKey(value);
+    }
+  }
 
   const check = () => {
     return key === ''
@@ -48,7 +61,7 @@ const ConfirmationPayment = ({ show, onHide, selectedOtpr, amount, selectedPol }
           <Form.Control
             value={key}
             className='mt-3'
-            onChange={e => setKey(e.target.value)}
+            onChange={handleChange}
             placeholder={"Введите подтверждающий ключ"}
           />
         </Form>
