@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Container, Card, Row, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image"
-import { fetchOneAccount } from "../../http/accountAPI";
+import { fetchOneAccount, fetchOneCredit } from "../../http/accountAPI";
 import {useParams } from "react-router-dom";
 import ChangeAccountName from "../../modals/ChangeAccountName";
 
@@ -9,15 +9,19 @@ const Credit = () => {
 
     const [changeAccountNameVisible, setChangeAccountNameVisible] = useState(false)
     const [account, setAccount] = useState({})
-    //const [credit, setCredit] = useState({})
+    const [credit, setCredit] = useState({})
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const {id} = useParams()
 
     useEffect(() => {
       fetchOneAccount(id).then(data => setAccount(data))
-      //fetchOneAccount(creditId).then(data => setCredit(data))
       setShouldUpdate(false)
     }, [shouldUpdate])
+
+    useEffect(() => {
+      fetchOneCredit(account.id).then(data => setCredit(data))
+      setShouldUpdate(false)
+    }, [account.id])
 
     return (
       <Container

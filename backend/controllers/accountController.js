@@ -72,6 +72,32 @@ class AccountController {
     return res.json({ account })
   }
 
+  async  getCreditDetails(req, res, next) {
+    const { creditId } = req.params
+
+    let accId = -1;
+    try {
+      accId = parseInt(creditId)
+    } catch (err) {
+      return next(ApiError.badRequest('Некорректно задано accountId'))
+    }
+
+    const credit = await Credit.findOne({
+      raw: true,
+      where: { accountId: accId, userId: req.user.id },
+      attributes: [
+        'id',
+        [Sequelize.literal('CAST(amount AS DECIMAL(10, 2))'), 'amount'],
+        'term',
+        'refinancingRate'
+      ],
+    })
+    if (!credit)
+      return next(ApiError.badRequest('Кредит не предналежит данному пользователю и/или кредит не найден'))
+
+    return res.json({ credit })
+  }
+
   async getListWithoutCard(req, res, next) {
 
     const accounts = await Accounts.findAll({

@@ -44,3 +44,8 @@ export const createCreditAccount = async (account) => {
   const {data} = await $authHost.post('api/accounts/', account)
   return data
 }
+
+export const fetchOneCredit = async (id) => {
+  const {data} = await $authHost.get('api/accounts/credits/' + id, )
+  return data.credit
+}
