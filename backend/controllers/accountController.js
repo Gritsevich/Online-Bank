@@ -89,7 +89,8 @@ class AccountController {
         'id',
         [Sequelize.literal('CAST(amount AS DECIMAL(10, 2))'), 'amount'],
         'term',
-        'refinancingRate'
+        'refinancingRate',
+        [Sequelize.literal('CAST(monthAmount AS DECIMAL(10, 2))'), 'monthAmount'],
       ],
     })
     if (!credit)
@@ -154,7 +155,9 @@ class AccountController {
           amount: creditAmount,
           term: term,
           accountId: account.id,
-          refinancingRate: await refinancingRate.refinancingOnData(new Date())
+          refinancingRate: await refinancingRate.refinancingOnData(new Date()),
+          monthAmount: (parseFloat(creditAmount) + (parseFloat(creditAmount) * ( parseFloat(await refinancingRate.refinancingOnData(new Date())) / 100) )) / parseFloat(term),
+          userId: user.id,
         }
       )
     }

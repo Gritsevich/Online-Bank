@@ -132,6 +132,10 @@ const ChooseCard = ({show, onHide, setShouldUpdate}) => {
                           </Dropdown.Menu>
                       </Dropdown>
                 </div> }
+                {selectedType.id === 2 && 
+                <div>
+                    К сожелению кредит открывается со счёта, после вы можете создать к нему карту.
+                </div>}
             </Form>
             </Container> }
             </Modal.Body>

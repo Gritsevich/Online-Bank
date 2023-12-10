@@ -13,15 +13,16 @@ const Credit = () => {
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const {id} = useParams()
 
+
     useEffect(() => {
       fetchOneAccount(id).then(data => setAccount(data))
       setShouldUpdate(false)
     }, [shouldUpdate])
 
     useEffect(() => {
-      fetchOneCredit(account.id).then(data => setCredit(data))
+      fetchOneCredit(id).then(data => setCredit(data))
       setShouldUpdate(false)
-    }, [account.id])
+    }, [id])
 
     return (
       <Container
@@ -36,7 +37,7 @@ const Credit = () => {
             Реквизиты счёта: {account.requisites}
           </Row>
           <Row className="mt-3 ">
-            Сумма кредита ... на ... месяцев
+            Сумма кредита {credit.amount} на {credit.term} месяцев
           </Row>
           <Row className="mt-3">
             Ежемесячный платёж ...
