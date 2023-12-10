@@ -22,8 +22,12 @@ const FTwoA = observer(() => {
 
   const click = async () => {
     let data;
+    try {
     data = await createFTwoA({code: key})
     user.setIsFTwoA(data.success)
+    } catch (e) {
+      alert(e.response.data.message)
+    }
   }
 
   const handleChange = (e) => 
