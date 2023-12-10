@@ -37,6 +37,36 @@ const Account = (number) => {
     return creditName === '' || isEmpty(selectedCurrency) || isEmpty(selectedType) || creditAmount === 0 || term === 0
   }
 
+  const handleChangeForAmount = (e) => 
+  {
+    let value = e.target.value
+    if(value === '')
+    {
+      setCreditAmount(0)
+      return
+    }
+    value = value.replace(/^0+/,"")
+    if(value.match("^(([1-9][0-9]*)|(0))(($)|([.,][0-9]{0,2}$))")!=null) 
+    {
+      setCreditAmount(value);
+    }
+  }
+
+  const handleChangeForMonth = (e) => 
+  {
+    let value = e.target.value
+    if(value === '')
+    {
+      setTerm(0)
+      return
+    }
+    value = value.replace(/^0+/,"")
+    if(value.match("^(([1-9][0-9]*)|(0))(($)|([.,][0-9]{0,2}$))")!=null) 
+    {
+      setTerm(value);
+    }
+  }
+
   const debit = async () => {
     try {
       let data;
@@ -109,17 +139,19 @@ const Account = (number) => {
                         value={creditName}
                         onChange={e => setCreditName(e.target.value)}
                       />
+                      <Row className="mt-3">Введите сумму кредита</Row>
                       <Form.Control
                         className="mt-3"
                         placeholder="Введите сумму кредита..."
                         value={creditAmount}
-                        onChange={e => setCreditAmount(e.target.value)}
+                        onChange={handleChangeForAmount}
                       />
+                      <Row className="mt-3">Введите срок кредита (в месяцах)</Row>
                       <Form.Control
                         className="mt-3"
                         placeholder="Введите срок кредита..."
                         value={term}
-                        onChange={e => setTerm(e.target.value)}
+                        onChange={handleChangeForMonth}
                       />
                       <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>{selectedCurrency.value || "Выберите тип валюты"}</Dropdown.Toggle>
