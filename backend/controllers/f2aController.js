@@ -27,8 +27,9 @@ class F2AController
   async set(req, res, next){
     const { code } = req.body
 
-    if (!code || typeof(code) !== 'string')
+    if (!code) {
       return next(ApiError.badRequest('Некорректно задан code'))
+    }
 
     let f2a = await F2A.findOne({where:{userId:req.user.id}})
 
@@ -36,12 +37,14 @@ class F2AController
       f2a = await F2A.create({ userId: user.id, enabled: false, secretKey: ""});
     }
 
-    if(f2a.secretKey === "")
-       return next(ApiError.badRequest('Не был сгенерирован qrcode'))
+    if(f2a.secretKey === "") {
+      return next(ApiError.badRequest('Не был сгенерирован qrcode'))
+    }
 
     const verified = authenticator.check(code, f2a.secretKey)
-    if(!verified) 
+    if(!verified) {
       return next(ApiError.badRequest('Некорректно введен код'))
+    }
 
     f2a.enabled = true
     await f2a.save()
