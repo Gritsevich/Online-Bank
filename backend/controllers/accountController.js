@@ -90,7 +90,7 @@ class AccountController {
         [Sequelize.literal('CAST(amount AS DECIMAL(10, 2))'), 'amount'],
         'term',
         'refinancingRate',
-        [Sequelize.literal('CAST(monthAmount AS DECIMAL(10, 2))'), 'monthAmount'],
+        'monthAmount',
       ],
     })
     if (!credit)

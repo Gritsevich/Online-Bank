@@ -34,7 +34,7 @@ const Account = (number) => {
   }
 
   const checkCredit = () => {
-    return creditName === '' || isEmpty(selectedCurrency) || isEmpty(selectedType) || creditAmount === 0 || term === 0
+    return creditName === '' || isEmpty(selectedCurrency) || isEmpty(selectedType) || creditAmount === 0 || term === 0 
   }
 
   const handleChangeForAmount = (e) => 
@@ -46,7 +46,7 @@ const Account = (number) => {
       return
     }
     value = value.replace(/^0+/,"")
-    if(value.match("^(([1-9][0-9]*)|(0))(($)|([.,][0-9]{0,2}$))")!=null) 
+    if(value.match("^[0-9]{1,5}$")!=null) 
     {
       setCreditAmount(value);
     }
@@ -61,7 +61,7 @@ const Account = (number) => {
       return
     }
     value = value.replace(/^0+/,"")
-    if(value.match("^(([1-9][0-9]*)|(0))(($)|([.,][0-9]{0,2}$))")!=null) 
+    if(value.match("^[0-9]{1,3}$")!=null) 
     {
       setTerm(value);
     }

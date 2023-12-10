@@ -40,7 +40,7 @@ const Credit = () => {
             Сумма кредита {credit.amount} на {credit.term} месяцев
           </Row>
           <Row className="mt-3">
-            Ежемесячный платёж ...
+            Ежемесячный платёж {credit.monthAmount}
           </Row>
           <Button variant={"outline-success"} className="mt-3" onClick={() => {setChangeAccountNameVisible(true)}}>Изменить название счёта</Button>
         </Card>
