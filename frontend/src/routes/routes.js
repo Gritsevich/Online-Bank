@@ -34,7 +34,7 @@ export const authRoutes = [
   },
 
   {
-    path: CREDIT_ROUTE,
+    path: CREDIT_ROUTE + '/:id',
     Component: Credit
   },
 

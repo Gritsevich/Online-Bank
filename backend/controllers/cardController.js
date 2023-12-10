@@ -8,7 +8,7 @@ const { sequelize } = require('../db');
 const accountController = require('./accountController');
 /** Initialize new Credit Card Generator */
 const carder = new CreditCardGenerator()
-
+const f2aController = require('./f2aController')
 
 class CardController
 {
@@ -144,22 +144,25 @@ class CardController
    async unblock(req, res, next)
   {
     const user = req.user
-    let { card, code } = req.body
+    // let { card, code } = req.body
 
-    if(card.blockId != BlockEnum.LOCKBYUSER)
+    let card = req.body[0]; 
+    let code = req.body[1].code;
+
+    if(card.block.type != BlockEnum.LOCKBYUSER)
       return next(ApiError.badRequest('Недостаточно прав или невозможно выполнить разблокировку'))
   
-    if (!code || typeof(code) !== 'string')
+    if (!code /*|| typeof(code) !== 'string'*/)
       return next(ApiError.badRequest('Некорректно задано code'))
 
     try{
-      if( ! await f2aController.check(code, user.userId))//user?
+      if( ! await f2aController.check(code, user.id))//user?
         return next(ApiError.badRequest('Некорректно веден код'))
     } catch(err){
       return next(err)
     }
 
-    card.blockId = BlockEnum.UNBLOCK
+    card.block.type = BlockEnum.UNBLOCK
     await Cards.update({
       blockId: 1
     },{where:{ id: card.id}})

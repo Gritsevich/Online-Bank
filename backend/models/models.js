@@ -64,7 +64,8 @@ const Credit = sequelize.define('credit',
 {
   id:{type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull:false},
   amount:{type: DataTypes.DOUBLE(20,2), allowNull:false},
-  term:{type: DataTypes.DATE, allowNull:false },
+  term:{type: DataTypes.INTEGER, allowNull:false },
+  refinancingRate: {type: DataTypes.DOUBLE, allowNull: false},
 })
 
 const History = sequelize.define('history', 

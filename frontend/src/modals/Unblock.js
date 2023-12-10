@@ -18,7 +18,7 @@ const Unblock = ({show, onHide, card}) => {
   const unblocking = async () =>{
     try {
       let data;
-      data = await cardUnblock(card, {code: key}) //user?
+      data = await cardUnblock([card, {code: key}]) //user?
       navigate(CARDS_ROUTE)
     } catch (e) {
       alert(e.response.data.message)

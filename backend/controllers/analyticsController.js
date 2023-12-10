@@ -1,5 +1,5 @@
 const ApiError = require('../error/ApiError');
-const { Currency, Accounts, TypeAccount } = require('../models/models')
+const { Currency, Accounts, TypeAccount, Cards } = require('../models/models')
 const { Op } = require("sequelize");
 
 class AnalyticsController
@@ -28,11 +28,16 @@ class AnalyticsController
   }
 
   async getAccountsWithCard(req, res, next){
-     const accounts = await Accounts.findAll({
-      where: { userId: req.user.id, 
-         cardId: {
-          [Op.ne]: null
-        } 
+    const accounts = await Accounts.findAll({
+      where: { 
+        userId: req.user.id
+      },
+      include: {
+        model: Cards,
+        where: {
+          blockId: 1
+        },
+        required: true
       },
       attributes: [
         'id',
@@ -40,7 +45,8 @@ class AnalyticsController
         'amount',
         'requisites'
       ]
-    })
+    });
+
     return res.json({accounts})
   }
 
