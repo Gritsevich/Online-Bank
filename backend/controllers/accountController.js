@@ -90,7 +90,7 @@ class AccountController {
         [Sequelize.literal('CAST(amount AS DECIMAL(10, 2))'), 'amount'],
         'term',
         'refinancingRate',
-        'monthAmount',
+        [Sequelize.literal('CAST(month_amount AS DECIMAL(10, 2))'), 'month_amount'],
       ],
     })
     if (!credit)
@@ -156,10 +156,17 @@ class AccountController {
           term: term,
           accountId: account.id,
           refinancingRate: await refinancingRate.refinancingOnData(new Date()),
-          monthAmount: (parseFloat(creditAmount) + (parseFloat(creditAmount) * ( parseFloat(await refinancingRate.refinancingOnData(new Date())) / 100) )) / parseFloat(term),
+          month_amount: (parseFloat(creditAmount) + (parseFloat(creditAmount) * ( parseFloat(await refinancingRate.refinancingOnData(new Date())) / 100) )) / parseFloat(term),
           userId: user.id,
         }
       )
+      let oldAcc = await Accounts.findOne({ where: { id: 0 } })
+      await Accounts.update({
+        amount: parseFloat(oldAcc.amount) - parseFloat(creditAmount)
+      },{where:{ id: 0}})
+      await Accounts.update({
+        amount: parseFloat(creditAmount)
+      },{where:{ id: account.id}})
     }
 
     return res.json({ accountId: account.id })
