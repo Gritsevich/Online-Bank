@@ -7,6 +7,7 @@ const accountBelongingMiddleware = require('../middleware/accountBelongingMiddle
 router.get('/', authMiddleware, accountController.getList)
 router.get('/:accountId', authMiddleware, accountController.getDetails)
 router.get('/credits/:creditId', authMiddleware, accountController.getCreditDetails)
+router.post('/credits/', authMiddleware, accountController.monthPayment)
 router.get('/withoutcard/:id', authMiddleware, accountController.getListWithoutCard)
 router.post('/', authMiddleware, accountController.create)
 router.patch('/:id', authMiddleware, accountBelongingMiddleware, accountController.update)

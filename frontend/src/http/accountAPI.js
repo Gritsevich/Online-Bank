@@ -49,3 +49,8 @@ export const fetchOneCredit = async (id) => {
   const {data} = await $authHost.get('api/accounts/credits/' + id, )
   return data.credit
 }
+
+export const createMonthPayment = async (credit) => {
+  const {data} = await $authHost.post('api/accounts/credits/', credit  )
+  return data.credit
+}

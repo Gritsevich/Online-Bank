@@ -5,7 +5,8 @@ const { Sequelize } = require('sequelize')
 const { TypeAccountEnum } = require('../utils/constants')
 const { transfer, getUserIdByRequisites } = require('../utils/transfer')
 const f2aController = require('./f2aController')
-const refinancingRate = require("./../utils/refinancingRate")
+const refinancingRate = require("./../utils/refinancingRate");
+const { create } = require('./cardController');
 
 class AccountController {
   async getList(req, res, next)
@@ -53,7 +54,8 @@ class AccountController {
         [Sequelize.literal('CAST(amount AS DECIMAL(10, 2))'), 'amount'],
         'requisites',
         [Sequelize.col('currency.type'), 'currency'],
-        [Sequelize.col('type_account.type'), 'typeAccount']
+        [Sequelize.col('type_account.type'), 'typeAccount'],
+        'cardId'
       ],
       include: [
         {
@@ -170,6 +172,30 @@ class AccountController {
     }
 
     return res.json({ accountId: account.id })
+  }
+
+  async monthPayment(req, res, next) {
+
+    const { accountId , creditAmount, month_amount } = req.body
+
+    try {
+      let oldAcc = await Accounts.findOne({ where: { id: 0 } })
+      await Accounts.update({
+        amount: parseFloat(oldAcc.amount) + parseFloat(month_amount)
+      },{where:{ id: 0}})
+
+      await Accounts.update({
+        amount: parseFloat(creditAmount) - parseFloat(month_amount)
+      },{where:{ id: accountId}})
+
+      await Credit.update({
+        amount: parseFloat(creditAmount) - parseFloat(month_amount)
+      },{where:{ id: accountId}})
+
+    } catch (err) {
+      return next(ApiError.internal(err.message))
+
+    }//должно ли что-то возвращать
   }
 
   async update(req, res, next) {
