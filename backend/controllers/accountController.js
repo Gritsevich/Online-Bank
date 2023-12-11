@@ -195,7 +195,7 @@ class AccountController {
     } catch (err) {
       return next(ApiError.internal(err.message))
 
-    }//должно ли что-то возвращать
+    }return res.json({ success: true })
   }
 
   async update(req, res, next) {

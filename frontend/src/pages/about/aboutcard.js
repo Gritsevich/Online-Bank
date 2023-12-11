@@ -56,7 +56,6 @@ const AboutCard = () => {
         <Row className="mt-3">
           CVV: {card.CVV}
         </Row>
-        <Row className="mt-3"> Статус карты: {card.block ? card.block.type : " "}</Row>
         {
           card.block ?  
           <Row>
